@@ -1,0 +1,212 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Enhanced Petstore API",
+    "description": "A simple API that demonstrates CRUD operations on pets. Updated mandatory fields and authentication requrirements for workshop use.",
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://petstore3.swagger.io/api/v3",
+      "description": "Swagger Petstore live demo server"
+    }
+  ],
+  "paths": {
+    "/pet": {
+      "post": {
+        "summary": "Add a new pet to the store",
+        "description": "Creates a new pet with the given details. Only ID, name and status are required. This endpoint needs OAuth2 authorization code authentication.",
+        "security": [{ "petstore_oauth2": ["write:pets", "read:pets"] }],
+        "operationId": "addPet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Pet" },
+              "example": {
+                "id": 0,
+                "name": "doggie",
+                "category": { "id": 6, "name": "Dogs" },
+                "photoUrls": ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
+                "tags": [{ "id": 1, "name": "friendly" }],
+                "status": "available"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pet successfully added",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid API key" }
+        }
+      },
+      "put": {
+        "summary": "Update an existing pet",
+        "description": "Updates an existing pet in the store. Requires id, name and status. This endpoint needs OAuth2 authorization code authentication.",
+        "security": [{ "petstore_oauth2": ["write:pets", "read:pets"] }],
+        "operationId": "updatePet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Pet" },
+              "example": {
+                "id": 1,
+                "name": "doggie",
+                "category": { "id": 6, "name": "Dogs" },
+                "photoUrls": ["https://example.com/photo1.jpg"],
+                "tags": [{ "id": 2, "name": "updated" }],
+                "status": "sold"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pet successfully updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized – OAuth2 token missing or invalid" }
+        }
+      }
+    },
+    "/pet/{petId}": {
+      "get": {
+        "summary": "Find pet by ID",
+        "description": "Returns a single pet by its ID. Useful for testing GET operations.",
+        "operationId": "getPetById",
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" },
+            "description": "ID of pet to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pet found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" }
+              }
+            }
+          },
+          "404": { "description": "Pet not found" }
+        }
+      }
+    },
+    "/store/inventory": {
+      "get": {
+        "summary": "Returns pet inventories by status",
+        "description": "Displays counts of pets in various statuses such as available, pending, or sold.",
+        "operationId": "getInventory",
+        "responses": {
+          "200": {
+            "description": "Inventory retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "type": "integer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" }
+        },
+        "required": ["id", "name"],
+        "description": "Category of the pet"
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" }
+        },
+        "required": ["id", "name"],
+        "description": "Tags associated with the pet"
+      },
+      "Pet": {
+        "type": "object",
+        "required": ["id", "name", "status"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 10 },
+          "name": { "type": "string", "example": "doggie" },
+          "category": { "$ref": "#/components/schemas/Category" },
+          "photoUrls": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["https://example.com/photo.jpg"]
+          },
+          "tags": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Tag" }
+          },
+          "status": {
+            "type": "string",
+            "description": "pet status in the store",
+            "enum": ["available", "pending", "sold"]
+          }
+        },
+        "description": "A pet available in the store"
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api_key",
+        "description": "API key required for adding pets. Include this header in your request. Example: `api_key: special-key`"
+      },
+      "petstore_oauth": {
+        "type": "oauth2",
+        "description": "OAuth2 implicit flow example for demo purposes",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "petstore_oauth2": {
+        "type": "oauth2",
+        "description": "OAuth2 Authorization code flow example for demo purposes",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+            "tokenUrl": "https://petstore3.swagger.io/oauth/token",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      }
+    }
+  }
+}
