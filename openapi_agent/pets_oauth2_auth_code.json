@@ -16,19 +16,39 @@
       "post": {
         "summary": "Add a new pet to the store",
         "description": "Creates a new pet with the given details. Only ID, name and status are required. This endpoint needs OAuth2 authorization code authentication.",
-        "security": [{ "petstore_oauth2": ["write:pets", "read:pets"] }],
+        "security": [
+          {
+            "petstore_oauth2": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ],
         "operationId": "addPet",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Pet" },
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              },
               "example": {
                 "id": 0,
                 "name": "doggie",
-                "category": { "id": 6, "name": "Dogs" },
-                "photoUrls": ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"],
-                "tags": [{ "id": 1, "name": "friendly" }],
+                "category": {
+                  "id": 6,
+                  "name": "Dogs"
+                },
+                "photoUrls": [
+                  "https://example.com/photo1.jpg",
+                  "https://example.com/photo2.jpg"
+                ],
+                "tags": [
+                  {
+                    "id": 1,
+                    "name": "friendly"
+                  }
+                ],
                 "status": "available"
               }
             }
@@ -39,29 +59,52 @@
             "description": "Pet successfully added",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Pet" }
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
               }
             }
           },
-          "401": { "description": "Missing or invalid API key" }
+          "401": {
+            "description": "Missing or invalid API key"
+          }
         }
       },
       "put": {
         "summary": "Update an existing pet",
         "description": "Updates an existing pet in the store. Requires id, name and status. This endpoint needs OAuth2 authorization code authentication.",
-        "security": [{ "petstore_oauth2": ["write:pets", "read:pets"] }],
+        "security": [
+          {
+            "petstore_oauth2": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ],
         "operationId": "updatePet",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/Pet" },
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              },
               "example": {
                 "id": 1,
                 "name": "doggie",
-                "category": { "id": 6, "name": "Dogs" },
-                "photoUrls": ["https://example.com/photo1.jpg"],
-                "tags": [{ "id": 2, "name": "updated" }],
+                "category": {
+                  "id": 6,
+                  "name": "Dogs"
+                },
+                "photoUrls": [
+                  "https://example.com/photo1.jpg"
+                ],
+                "tags": [
+                  {
+                    "id": 2,
+                    "name": "updated"
+                  }
+                ],
                 "status": "sold"
               }
             }
@@ -72,11 +115,15 @@
             "description": "Pet successfully updated",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Pet" }
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
               }
             }
           },
-          "401": { "description": "Unauthorized – OAuth2 token missing or invalid" }
+          "401": {
+            "description": "Unauthorized – OAuth2 token missing or invalid"
+          }
         }
       }
     },
@@ -90,7 +137,10 @@
             "name": "petId",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" },
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
             "description": "ID of pet to return"
           }
         ],
@@ -99,11 +149,15 @@
             "description": "Pet found",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Pet" }
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
               }
             }
           },
-          "404": { "description": "Pet not found" }
+          "404": {
+            "description": "Pet not found"
+          }
         }
       }
     },
@@ -119,7 +173,9 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "additionalProperties": { "type": "integer" }
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
                 }
               }
             }
@@ -133,66 +189,86 @@
       "Category": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
         },
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "description": "Category of the pet"
       },
       "Tag": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
         },
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "description": "Tags associated with the pet"
       },
       "Pet": {
         "type": "object",
-        "required": ["id", "name", "status"],
+        "required": [
+          "id",
+          "name",
+          "status"
+        ],
         "properties": {
-          "id": { "type": "integer", "format": "int64", "example": 10 },
-          "name": { "type": "string", "example": "doggie" },
-          "category": { "$ref": "#/components/schemas/Category" },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "doggie"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
           "photoUrls": {
             "type": "array",
-            "items": { "type": "string" },
-            "example": ["https://example.com/photo.jpg"]
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "https://example.com/photo.jpg"
+            ]
           },
           "tags": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Tag" }
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
           },
           "status": {
             "type": "string",
             "description": "pet status in the store",
-            "enum": ["available", "pending", "sold"]
+            "enum": [
+              "available",
+              "pending",
+              "sold"
+            ]
           }
         },
         "description": "A pet available in the store"
       }
     },
     "securitySchemes": {
-      "api_key": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "api_key",
-        "description": "API key required for adding pets. Include this header in your request. Example: `api_key: special-key`"
-      },
-      "petstore_oauth": {
-        "type": "oauth2",
-        "description": "OAuth2 implicit flow example for demo purposes",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
-      },
       "petstore_oauth2": {
         "type": "oauth2",
         "description": "OAuth2 Authorization code flow example for demo purposes",
