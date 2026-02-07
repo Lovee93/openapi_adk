@@ -37,7 +37,7 @@ valid_tokens = set()
 # --- OAuth Endpoints ---
 
 @app.get("/oauth/authorize", response_class=HTMLResponse)
-def authorize_page(client_id: str, redirect_uri: str, state: str, scope: str = "", response_type: str = "code"):
+def authorize_page(client_id: str, state: str, redirect_uri: Optional[str] = "http://localhost/callback", scope: str = "", response_type: str = "code"):
     return f"""
     <html>
         <head>
