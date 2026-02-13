@@ -134,7 +134,7 @@ class Pet(BaseModel):
     id: int
     name: str
     category: Optional[Category] = None
-    photoUrls: List[str]
+    photoUrls: Optional[List[str]] = None
     tags: Optional[List[Tag]] = []
     status: PetStatus
 
